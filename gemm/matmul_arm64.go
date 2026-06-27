@@ -20,7 +20,11 @@ func MatMul(v, w *tensor.Tensor[float64]) *tensor.Tensor[float64] {
 		panic("invalid shape")
 	}
 
-	m, n, k := v.Shape[0], w.Shape[1], v.Shape[1]
+	if v.Shape[1] != w.Shape[0] {
+		panic("shape mismatch")
+	}
+
+	m, k, n := v.Shape[0], v.Shape[1], w.Shape[1]
 	alpha := C.double(1.0)
 	beta := C.double(0.0)
 
@@ -31,10 +35,10 @@ func MatMul(v, w *tensor.Tensor[float64]) *tensor.Tensor[float64] {
 		C.CblasNoTrans,
 		C.int(m), C.int(n), C.int(k),
 		alpha,
-		(*C.double)(unsafe.Pointer(&v.Data[0])), C.int(m),
-		(*C.double)(unsafe.Pointer(&w.Data[0])), C.int(k),
+		(*C.double)(unsafe.Pointer(&v.Data[0])), C.int(k),
+		(*C.double)(unsafe.Pointer(&w.Data[0])), C.int(n),
 		beta,
-		(*C.double)(unsafe.Pointer(&out[0])), C.int(m),
+		(*C.double)(unsafe.Pointer(&out[0])), C.int(n),
 	)
 
 	return tensor.New([]int{m, n}, out)
