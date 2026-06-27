@@ -10,14 +10,11 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
+
+	"github.com/itsubaki/autograd/tensor"
 )
 
-type Tensor struct {
-	Data  []float64
-	Shape []int
-}
-
-func matmul(v, w Tensor) Tensor {
+func matmul(v, w *tensor.Tensor[float64]) *tensor.Tensor[float64] {
 	m, n, k := v.Shape[0], w.Shape[1], v.Shape[1]
 	c := make([]float64, m*n)
 	alpha := C.double(1.0)
@@ -35,28 +32,19 @@ func matmul(v, w Tensor) Tensor {
 		(*C.double)(unsafe.Pointer(&c[0])), C.int(m),
 	)
 
-	return Tensor{
-		Data:  c,
-		Shape: []int{m, n},
-	}
+	return tensor.New([]int{m, n}, c)
 }
 
 func main() {
-	v := Tensor{
-		Data: []float64{
-			1, 2,
-			3, 4,
-		},
-		Shape: []int{2, 2},
-	}
+	v := tensor.New([]int{2, 2}, []float64{
+		1, 2,
+		3, 4,
+	})
 
-	w := Tensor{
-		Data: []float64{
-			5, 6,
-			7, 8,
-		},
-		Shape: []int{2, 2},
-	}
+	w := tensor.New([]int{2, 2}, []float64{
+		5, 6,
+		7, 8,
+	})
 
 	result := matmul(v, w)
 
