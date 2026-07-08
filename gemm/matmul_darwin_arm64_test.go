@@ -7,7 +7,7 @@ import (
 	"github.com/itsubaki/gemm/gemm"
 )
 
-func matmulApple(b *testing.B, rows, cols int) {
+func matmulDarwinARM64(b *testing.B, rows, cols int) {
 	data := make([]float64, rows*cols)
 	t := tensor.New([]int{rows, cols}, data)
 
@@ -22,14 +22,14 @@ func matmulApple(b *testing.B, rows, cols int) {
 	_ = out
 }
 
-func BenchmarkMatMulApple1024(b *testing.B) {
-	matmulApple(b, 1024, 1024)
+func BenchmarkMatMulDarwinARM641024(b *testing.B) {
+	matmulDarwinARM64(b, 1024, 1024)
 }
 
-func BenchmarkMatMulApple2048(b *testing.B) {
-	matmulApple(b, 2048, 2048)
+func BenchmarkMatMulDarwinARM642048(b *testing.B) {
+	matmulDarwinARM64(b, 2048, 2048)
 }
 
-func BenchmarkMatMulApple4096(b *testing.B) {
-	matmulApple(b, 4096, 4096)
+func BenchmarkMatMulDarwinARM644096(b *testing.B) {
+	matmulDarwinARM64(b, 4096, 4096)
 }
