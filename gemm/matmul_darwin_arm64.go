@@ -33,12 +33,17 @@ func MatMul(v, w *tensor.Tensor[float64]) *tensor.Tensor[float64] {
 		C.CblasRowMajor,
 		C.CblasNoTrans,
 		C.CblasNoTrans,
-		C.int(m), C.int(n), C.int(k),
+		C.int(m),
+		C.int(n),
+		C.int(k),
 		alpha,
-		(*C.double)(unsafe.Pointer(&v.Data[0])), C.int(k),
-		(*C.double)(unsafe.Pointer(&w.Data[0])), C.int(n),
+		(*C.double)(unsafe.Pointer(&v.Data[0])),
+		C.int(k),
+		(*C.double)(unsafe.Pointer(&w.Data[0])),
+		C.int(n),
 		beta,
-		(*C.double)(unsafe.Pointer(&out[0])), C.int(n),
+		(*C.double)(unsafe.Pointer(&out[0])),
+		C.int(n),
 	)
 
 	return tensor.New([]int{m, n}, out)
