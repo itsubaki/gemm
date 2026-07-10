@@ -7,7 +7,7 @@ import (
 	"github.com/itsubaki/gemm/gemm"
 )
 
-func matmulDarwinARM64(b *testing.B, rows, cols int) {
+func matmulDarwin(b *testing.B, rows, cols int) {
 	data := make([]float64, rows*cols)
 	t := tensor.New([]int{rows, cols}, data)
 
@@ -22,14 +22,14 @@ func matmulDarwinARM64(b *testing.B, rows, cols int) {
 	_ = out
 }
 
-func BenchmarkMatMulDarwinARM641024(b *testing.B) {
-	matmulDarwinARM64(b, 1024, 1024)
+func BenchmarkMatMulDarwin1024(b *testing.B) {
+	matmulDarwin(b, 1024, 1024)
 }
 
-func BenchmarkMatMulDarwinARM642048(b *testing.B) {
-	matmulDarwinARM64(b, 2048, 2048)
+func BenchmarkMatMulDarwin2048(b *testing.B) {
+	matmulDarwin(b, 2048, 2048)
 }
 
-func BenchmarkMatMulDarwinARM644096(b *testing.B) {
-	matmulDarwinARM64(b, 4096, 4096)
+func BenchmarkMatMulDarwin4096(b *testing.B) {
+	matmulDarwin(b, 4096, 4096)
 }
